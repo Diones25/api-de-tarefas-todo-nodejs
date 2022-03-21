@@ -3,6 +3,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import apiRoutes from './routes/api';
+import  { conn } from './instances/pg';
 
 dotenv.config();
 
@@ -12,6 +13,7 @@ server.use(cors());
 
 server.use(express.static(path.join(__dirname, '../public')));
 server.use(express.urlencoded({ extended: true }));
+server.use(express.json());
 
 server.get('/ping', (req: Request, res: Response) => res.json({ pong: true }));
 
@@ -29,4 +31,13 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
 }
 server.use(errorHandler);
 
-server.listen(process.env.PORT);
+conn
+.sync()
+//.sync({ force: true })
+.then(() => {
+    server.listen(process.env.PORT, () => {
+        console.log(`Servidor rodando: http://localhost:${process.env.PORT}`)
+    });
+}).catch((err) => {
+    console.log((`ERRO DE CONEXÃO: ${err}`));
+});

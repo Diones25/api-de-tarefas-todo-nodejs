@@ -1,5 +1,5 @@
 import { Model, DataTypes } from "sequelize";
-import { sequelize } from '../instances/pg';
+import { conn } from '../instances/pg';
 
 export interface TodoInstance extends Model {
     id: number,
@@ -7,7 +7,7 @@ export interface TodoInstance extends Model {
     done: boolean
 }
 
-export const Todo = sequelize.define<TodoInstance>('Todo', {
+export const Todo = conn.define<TodoInstance>('Todo', {
     id: {
         primaryKey: true,
         autoIncrement: true,

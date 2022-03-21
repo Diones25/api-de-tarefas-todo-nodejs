@@ -9,7 +9,6 @@ export const all = async (req: Request, res: Response) => {
 
 export const add = async (req: Request, res: Response) => {
     let title = req.body.title;
-
     if(title){
 
         let newTodo = await Todo.create({
@@ -22,7 +21,7 @@ export const add = async (req: Request, res: Response) => {
 
     }
     else{
-        res.json({erro: "Dados não envidados"});
+        res.status(422).json({erro: "Dados não envidados"});
     }
 }
 
